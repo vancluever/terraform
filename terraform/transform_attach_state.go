@@ -44,9 +44,13 @@ func (t *AttachStateTransformer) Transform(g *Graph) error {
 			return err
 		}
 
-		// Attach the first resource state we get
+		// Attach the matching resource state.
 		found := false
 		for _, result := range results {
+			if result.Address != addr.String() {
+				continue
+			}
+
 			if rs, ok := result.Value.(*ResourceState); ok {
 				log.Printf(
 					"[DEBUG] Attaching resource state to %q: %#v",
